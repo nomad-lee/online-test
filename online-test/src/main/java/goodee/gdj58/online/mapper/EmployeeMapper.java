@@ -14,4 +14,7 @@ public interface EmployeeMapper {
 	int deleteEmployee(int empNo);
 	int insertEmployee(Employee employee);
 	List<Employee> selectEmployeeList(Map<String, Object> paramMap);
+	int cntEmpList(String searchWord);
+	int cntStudentList(String searchWord);
+	int cntTeacherList(String searchWord);
 }

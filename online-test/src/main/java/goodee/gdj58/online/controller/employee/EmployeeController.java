@@ -16,7 +16,9 @@ import goodee.gdj58.online.service.IdService;
 import goodee.gdj58.online.vo.Employee;
 import goodee.gdj58.online.vo.Student;
 import goodee.gdj58.online.vo.Teacher;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller 
 public class EmployeeController {
 	@Autowired EmployeeService employeeService;
@@ -25,11 +27,6 @@ public class EmployeeController {
 	// pw수정 폼
 	@GetMapping("/employee/modifyEmpPw")
 	public String modifyEmpPw(HttpSession session) {
-		// 로그인 후 호출 가능
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
 		return "employee/modifyEmpPw";
 	}	
 	// pw수정 액션
@@ -37,19 +34,15 @@ public class EmployeeController {
 	public String modifyEmpPw(HttpSession session
 			, @RequestParam(value="oldPw") String oldPw
 			, @RequestParam(value="newPw") String newPw) {
-		// 로그인 후 호출 가능
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
 		
+		Employee loginEmp = (Employee)session.getAttribute("loginEmp");		
 		employeeService.updateEmployeePw(loginEmp.getEmpNo(), oldPw, newPw);
 		
 		return "redirect:/employee/empList";
 	}
 	
 	// 로그인
-	@GetMapping("/employee/loginEmp")
+	@GetMapping("/loginEmp")
 	public String loginEmp(HttpSession session) {
 		// 이미 로그인 중이라면 redirect:/employee/empList
 		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
@@ -59,56 +52,41 @@ public class EmployeeController {
 		return "employee/loginEmp";
 	}
 	
-	@PostMapping("/employee/loginEmp")
+	@PostMapping("/loginEmp")
 	public String loginEmp(HttpSession session, Employee emp) {
 		Employee resultEmp = employeeService.login(emp);
-		if(resultEmp == null) { // 로그인 실패
-			return "redirect:/employee/loginEmp";
-		}
+		
 		session.setAttribute("loginEmp", resultEmp);
 		return "redirect:/employee/empList";
 	}
 	
-	@GetMapping("/employee/logout")
+	//로그아웃
+	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/employee/loginEmp";
+		return "redirect:/loginEmp";
 	}
 	
 	/*
-	 *  로그인 후에 사용가능한 기능
+	 *  emp로그인 후에 사용가능한 기능
 	 */
 	
 	// Employee Begin
 	// 삭제
 	@GetMapping("/employee/removeEmp")
-	public String removeEmp(HttpSession session, @RequestParam("empNo") int empNo) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
-		
+	public String removeEmp(HttpSession session, @RequestParam("empNo") int empNo) {		
 		employeeService.removeEmployee(empNo);
 		return "redirect:/employee/empList"; // 리스트로 리다이렉트
 	}
 	
 	// 입력
 	@GetMapping("/employee/addEmp")
-	public String addEmp(HttpSession session) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
-		
+	public String addEmp(HttpSession session) {		
 		return "employee/addEmp"; // forword
 	}
 	
 	@PostMapping("/employee/addEmp")
 	public String addEmp(HttpSession session, Model model, Employee employee) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
 		
 		String idCheck = idService.getIdCheck(employee.getEmpId());
 		if(idCheck != null) {
@@ -121,7 +99,6 @@ public class EmployeeController {
 			model.addAttribute("errorMsg", "시스템에러로 등록실패");
 			return "employee/addEmp";
 		}
-		
 		return "redirect:/employee/empList"; // sendRedirect , CM -> C
 	}
 	
@@ -129,17 +106,25 @@ public class EmployeeController {
 	@GetMapping("/employee/empList")
 	public String empList(HttpSession session, Model model
 							, @RequestParam(value="currentPage", defaultValue = "1") int currentPage
-							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage) { 
+							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
+							, @RequestParam(value="searchWord", defaultValue="") String searchWord) { 
 							// int currentPage = reuqest.getParamenter("currentPage");
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
 		
-		List<Employee> list = employeeService.getEmployeeList(currentPage, rowPerPage);
+		log.debug("\u001B[31m"+currentPage+" <-- currentPage");
+		log.debug("\u001B[31m"+rowPerPage+" <-- rowPerPage");
+		log.debug("\u001B[31m"+searchWord+" <-- searchWord");
+		List<Employee> list = employeeService.getEmployeeList(currentPage, rowPerPage, searchWord);
 		// request.setAttribute("list", list);
 		model.addAttribute("list", list);
 		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("searchWord", searchWord);
+		int cntEmpList = employeeService.cntEmpList(searchWord);
+		int endPage = cntEmpList / rowPerPage;
+		if(cntEmpList % rowPerPage != 0) {
+			endPage++;
+		}
+		model.addAttribute("startPage", 1);
+		model.addAttribute("endPage", endPage);
 		return "employee/empList";
 	}
 	// Employee End
@@ -147,33 +132,19 @@ public class EmployeeController {
 	// Student Begin
 	// 삭제
 	@GetMapping("/employee/student/removeStudent")
-	public String removeStudent(HttpSession session, @RequestParam("studentNo") int studentNo) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
-		
+	public String removeStudent(HttpSession session, @RequestParam("studentNo") int studentNo) {		
 		employeeService.removeStudent(studentNo);
 		return "redirect:/employee/student/studentList"; // 리스트로 리다이렉트
 	}
 	
 	// 입력
 	@GetMapping("/employee/student/addStudent")
-	public String addStudent(HttpSession session) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
-		
+	public String addStudent(HttpSession session) {		
 		return "employee/student/addStudent"; // forword
 	}
 	
 	@PostMapping("/employee/student/addStudent")
 	public String addStudent(HttpSession session, Model model, Student student) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
 		
 		String idCheck = idService.getIdCheck(student.getStudentId());
 		if(idCheck != null) {
@@ -194,29 +165,32 @@ public class EmployeeController {
 	@GetMapping("/employee/student/studentList")
 	public String studentList(HttpSession session, Model model
 							, @RequestParam(value="currentPage", defaultValue = "1") int currentPage
-							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage) { 
+							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
+							, @RequestParam(value="searchWord", defaultValue="") String searchWord) { 
 							// int currentPage = reuqest.getParamenter("currentPage");
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
 		
-		List<Student> list = employeeService.getStudentList(currentPage, rowPerPage);
+		log.debug("\u001B[31m"+currentPage+" <-- currentPage");
+		log.debug("\u001B[31m"+rowPerPage+" <-- rowPerPage");
+		log.debug("\u001B[31m"+searchWord+" <-- searchWord");
+		List<Student> list = employeeService.getStudentList(currentPage, rowPerPage, searchWord);
 		// request.setAttribute("list", list);
 		model.addAttribute("list", list);
 		model.addAttribute("currentPage", currentPage);
+		int cntStudentList = employeeService.cntStudentList(searchWord);
+		int endPage = cntStudentList / rowPerPage;
+		if(cntStudentList % rowPerPage != 0) {
+			endPage++;
+		}
+		model.addAttribute("startPage", 1);
+		model.addAttribute("endPage", endPage);
 		return "employee/student/studentList";
 	}
-	// Student End
+	// Student End	
 	
 	// Teacher Begin
 	// 삭제
 	@GetMapping("/employee/teacher/removeTeacher")
 	public String removeTeacher(HttpSession session, @RequestParam("teacherNo") int teacherNo) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
 		
 		employeeService.removeTeacher(teacherNo);
 		return "redirect:/employee/teacher/teacherList"; // 리스트로 리다이렉트
@@ -224,21 +198,12 @@ public class EmployeeController {
 	
 	// 입력
 	@GetMapping("/employee/teacher/addTeacher")
-	public String addTeacher(HttpSession session) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
-		
+	public String addTeacher(HttpSession session) {		
 		return "employee/teacher/addTeacher"; // forward
 	}
 	
 	@PostMapping("/employee/teacher/addTeacher")
 	public String addTeacher(HttpSession session, Model model, Teacher teacher) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
 		
 		String idCheck = idService.getIdCheck(teacher.getTeacherId());
 		if(idCheck != null) {
@@ -259,17 +224,24 @@ public class EmployeeController {
 	@GetMapping("/employee/teacher/teacherList")
 	public String teacherList(HttpSession session, Model model
 							, @RequestParam(value="currentPage", defaultValue = "1") int currentPage
-							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage) { 
+							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
+							, @RequestParam(value="searchWord", defaultValue="") String searchWord) { 
 							// int currentPage = reuqest.getParamenter("currentPage");
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp == null) {
-			return "redirect:/employee/loginEmp";
-		}
 		
-		List<Teacher> list = employeeService.getTeacherList(currentPage, rowPerPage);
+		log.debug("\u001B[31m"+currentPage+" <-- currentPage");
+		log.debug("\u001B[31m"+rowPerPage+" <-- rowPerPage");
+		log.debug("\u001B[31m"+searchWord+" <-- searchWord");
+		List<Teacher> list = employeeService.getTeacherList(currentPage, rowPerPage, searchWord);
 		// request.setAttribute("list", list);
 		model.addAttribute("list", list);
 		model.addAttribute("currentPage", currentPage);
+		int cntTeacherList = employeeService.cntTeacherList(searchWord);
+		int endPage = cntTeacherList / rowPerPage;
+		if(cntTeacherList % rowPerPage != 0) {
+			endPage++;
+		}
+		model.addAttribute("startPage", 1);
+		model.addAttribute("endPage", endPage);
 		return "employee/teacher/teacherList";
 	}
 	// Teacher End

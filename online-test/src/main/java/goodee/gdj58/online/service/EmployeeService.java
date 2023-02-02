@@ -43,12 +43,17 @@ public class EmployeeService {
 		return employeeMapper.insertEmployee(employee);
 	}
 	
-	public List<Employee> getEmployeeList(int currentPage, int rowPerPage) {
+	public List<Employee> getEmployeeList(int currentPage, int rowPerPage, String searchWord) {
 		int beginRow = (currentPage-1)*rowPerPage;
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
 		return employeeMapper.selectEmployeeList(paramMap);
+	}
+	
+	public int cntEmpList(String searchWord) {
+		return employeeMapper.cntEmpList(searchWord);
 	}
 	// Emp End
 	
@@ -62,12 +67,16 @@ public class EmployeeService {
 		return studentMapper.insertStudent(student);
 	}
 	
-	public List<Student> getStudentList(int currentPage, int rowPerPage) {
+	public List<Student> getStudentList(int currentPage, int rowPerPage, String searchWord) {
 		int beginRow = (currentPage-1)*rowPerPage;
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
 		return studentMapper.selectStudentList(paramMap);
+	}
+	public int cntStudentList(String searchWord) {
+		return employeeMapper.cntStudentList(searchWord);
 	}
 	// Student End
 	
@@ -81,12 +90,16 @@ public class EmployeeService {
 		return teacherMapper.insertTeacher(teacher);
 	}
 	
-	public List<Teacher> getTeacherList(int currentPage, int rowPerPage) {
+	public List<Teacher> getTeacherList(int currentPage, int rowPerPage, String searchWord) {
 		int beginRow = (currentPage-1)*rowPerPage;
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
 		return teacherMapper.selectTeacherList(paramMap);
+	}
+	public int cntTeacherList(String searchWord) {
+		return employeeMapper.cntTeacherList(searchWord);
 	}
 	// Teacher End
 }

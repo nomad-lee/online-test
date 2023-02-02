@@ -47,7 +47,51 @@
 			, emp_id empId
 			, emp_name empName
 		FROM employee
+		<where>
+			<if test="searchWord != null || searchWord !=''">
+				emp_name like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
 		ORDER BY emp_no DESC
 		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<select id="cntEmpList"
+		resultType="int"
+		parameterType="java.lang.String">
+		
+		SELECT COUNT(*) count
+		FROM employee
+		<where>
+			<if test="searchWord != null || searchWord !=''">
+				emp_name like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+	
+	<select id="cntStudentList"
+		resultType="int"
+		parameterType="java.lang.String">
+		
+		SELECT COUNT(*) count
+		FROM student
+		<where>
+			<if test="searchWord != null || searchWord !=''">
+				student_name like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+	
+	<select id="cntTeacherList"
+		resultType="int"
+		parameterType="java.lang.String">
+		
+		SELECT COUNT(*) count
+		FROM teacher
+		<where>
+			<if test="searchWord != null || searchWord !=''">
+				teacher_name like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
 	</select>
 </mapper>
