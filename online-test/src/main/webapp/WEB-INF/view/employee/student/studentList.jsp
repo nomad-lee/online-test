@@ -12,20 +12,20 @@
 		<c:import url="/WEB-INF/view/employee/inc/empMenu.jsp"></c:import>
 	</div>
 	
-	<h1>Teacher List</h1>
-	<a href="${pageContext.request.contextPath}/teacher/addTeacher">강사등록</a>
+	<h1>Student List</h1>
+	<a href="${pageContext.request.contextPath}/employee/student/addStudent">학생등록</a>
 	<table border="1">
 		<tr>
-			<th>teacherId</th>
-			<th>teacherName</th>
+			<th>studentId</th>
+			<th>studentName</th>
 			<th>삭제</th>
 		</tr>
 		<c:forEach var="e" items="${list}">
 			<tr>
-				<td>${e.teacherId}</td>
-				<td>${e.teacherName}</td>
+				<td>${e.studentId}</td>
+				<td>${e.studentName}</td>
 				<td>
-					<a href="${pageContext.request.contextPath}/teacher/removeTeacher?teacherNo=${e.teacherNo}">
+					<a href="${pageContext.request.contextPath}/employee/student/removeStudent?studentNo=${e.studentNo}">
 						삭제
 					</a>
 				</td>
@@ -33,8 +33,8 @@
 		</c:forEach>
 	</table>
 	<div>
-		<a href="${pageContext.request.contextPath}/teacher/teacherList?currentPage=${currentPage-1}">이전</a>
-		<a href="${pageContext.request.contextPath}/teacher/teacherList?currentPage=${currentPage+1}">다음</a>
+		<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage-1}">이전</a>
+		<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage+1}">다음</a>
 	</div>
 </body>
 </html>
