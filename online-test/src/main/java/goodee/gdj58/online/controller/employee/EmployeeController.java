@@ -61,7 +61,7 @@ public class EmployeeController {
 	}
 	
 	//로그아웃
-	@GetMapping("/logout")
+	@GetMapping("employee/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/loginEmp";
