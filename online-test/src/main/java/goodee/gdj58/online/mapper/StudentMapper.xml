@@ -9,6 +9,18 @@
 		WHERE student_no = #{studentNo} AND student_pw = PASSWORD(#{oldPw})
 	</update>
 	
+	<select id="loginStudent" 
+		parameterType="goodee.gdj58.online.vo.Student"
+		resultType="goodee.gdj58.online.vo.Student">
+		
+		SELECT 
+			student_no studentNo
+			, student_id studentId
+			, student_name studentName
+		FROM student
+		WHERE student_id = #{studentId} AND student_pw = PASSWORD(#{studentPw})
+	</select>
+	
 	<delete id="deleteStudent" parameterType="int">
 		DELETE FROM student
 		WHERE student_no = #{studentNo}
@@ -37,5 +49,18 @@
 		FROM student
 		ORDER BY student_no DESC
 		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<select id="cntStudentList"
+		resultType="int"
+		parameterType="java.lang.String">
+		
+		SELECT COUNT(*) count
+		FROM student
+		<where>
+			<if test="searchWord != null || searchWord !=''">
+				student_name like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
 	</select>
 </mapper>

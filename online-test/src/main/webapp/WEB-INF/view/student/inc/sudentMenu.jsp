@@ -9,5 +9,5 @@
 	
 	<a href="${pageContext.request.contextPath}/student/studentList">시험관리</a>
 	
-	<a href="${pageContext.request.contextPath}/student/logout">학생로그아웃</a>
+	<a href="${pageContext.request.contextPath}/logout">학생로그아웃</a>
 </div>

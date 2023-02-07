@@ -9,7 +9,7 @@
 		WHERE emp_no = #{empNo} AND emp_pw = PASSWORD(#{oldPw})
 	</update>
 	
-	<select id="login" 
+	<select id="loginEmp" 
 		parameterType="goodee.gdj58.online.vo.Employee"
 		resultType="goodee.gdj58.online.vo.Employee">
 		
@@ -65,32 +65,6 @@
 		<where>
 			<if test="searchWord != null || searchWord !=''">
 				emp_name like CONCAT('%',#{searchWord},'%')
-			</if>
-		</where>
-	</select>
-	
-	<select id="cntStudentList"
-		resultType="int"
-		parameterType="java.lang.String">
-		
-		SELECT COUNT(*) count
-		FROM student
-		<where>
-			<if test="searchWord != null || searchWord !=''">
-				student_name like CONCAT('%',#{searchWord},'%')
-			</if>
-		</where>
-	</select>
-	
-	<select id="cntTeacherList"
-		resultType="int"
-		parameterType="java.lang.String">
-		
-		SELECT COUNT(*) count
-		FROM teacher
-		<where>
-			<if test="searchWord != null || searchWord !=''">
-				teacher_name like CONCAT('%',#{searchWord},'%')
 			</if>
 		</where>
 	</select>

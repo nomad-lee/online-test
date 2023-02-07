@@ -41,45 +41,19 @@ public class EmployeeController {
 		return "redirect:/employee/empList";
 	}
 	
-	// 로그인
-	@GetMapping("/loginEmp")
-	public String loginEmp(HttpSession session) {
-		// 이미 로그인 중이라면 redirect:/employee/empList
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp != null) {
-			return "redirect:/employee/empList";
-		}
-		return "employee/loginEmp";
-	}
-	
-	@PostMapping("/loginEmp")
-	public String loginEmp(HttpSession session, Employee emp) {
-		Employee resultEmp = employeeService.login(emp);
-		
-		session.setAttribute("loginEmp", resultEmp);
-		return "redirect:/employee/empList";
-	}
-	
-	//로그아웃
-	@GetMapping("employee/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/loginEmp";
-	}
-	
 	/*
 	 *  emp로그인 후에 사용가능한 기능
 	 */
 	
 	// Employee Begin
-	// 삭제
+	// Emp 삭제
 	@GetMapping("/employee/removeEmp")
 	public String removeEmp(HttpSession session, @RequestParam("empNo") int empNo) {		
 		employeeService.removeEmployee(empNo);
 		return "redirect:/employee/empList"; // 리스트로 리다이렉트
 	}
 	
-	// 입력
+	// Emp 입력
 	@GetMapping("/employee/addEmp")
 	public String addEmp(HttpSession session) {		
 		return "employee/addEmp"; // forword
@@ -102,7 +76,7 @@ public class EmployeeController {
 		return "redirect:/employee/empList"; // sendRedirect , CM -> C
 	}
 	
-	// 리스트
+	// Emp 리스트
 	@GetMapping("/employee/empList")
 	public String empList(HttpSession session, Model model
 							, @RequestParam(value="currentPage", defaultValue = "1") int currentPage
@@ -130,17 +104,17 @@ public class EmployeeController {
 	// Employee End
 	
 	// Student Begin
-	// 삭제
+	// Student 삭제
 	@GetMapping("/employee/student/removeStudent")
 	public String removeStudent(HttpSession session, @RequestParam("studentNo") int studentNo) {		
 		employeeService.removeStudent(studentNo);
 		return "redirect:/employee/student/studentList"; // 리스트로 리다이렉트
 	}
 	
-	// 입력
+	// Student 입력
 	@GetMapping("/employee/student/addStudent")
 	public String addStudent(HttpSession session) {		
-		return "employee/student/addStudent"; // forword
+		return "employee/student/addStudent"; // forward
 	}
 	
 	@PostMapping("/employee/student/addStudent")
@@ -161,7 +135,7 @@ public class EmployeeController {
 		return "redirect:/employee/student/studentList"; // sendRedirect , CM -> C
 	}
 	
-	// 리스트
+	// Student 리스트
 	@GetMapping("/employee/student/studentList")
 	public String studentList(HttpSession session, Model model
 							, @RequestParam(value="currentPage", defaultValue = "1") int currentPage
@@ -188,7 +162,7 @@ public class EmployeeController {
 	// Student End	
 	
 	// Teacher Begin
-	// 삭제
+	// Teacher 삭제
 	@GetMapping("/employee/teacher/removeTeacher")
 	public String removeTeacher(HttpSession session, @RequestParam("teacherNo") int teacherNo) {
 		
@@ -196,7 +170,7 @@ public class EmployeeController {
 		return "redirect:/employee/teacher/teacherList"; // 리스트로 리다이렉트
 	}
 	
-	// 입력
+	// Teacher 입력
 	@GetMapping("/employee/teacher/addTeacher")
 	public String addTeacher(HttpSession session) {		
 		return "employee/teacher/addTeacher"; // forward
@@ -220,7 +194,7 @@ public class EmployeeController {
 		return "redirect:/employee/teacher/teacherList"; // sendRedirect , CM -> C
 	}
 	
-	// 리스트
+	// Teacher 리스트
 	@GetMapping("/employee/teacher/teacherList")
 	public String teacherList(HttpSession session, Model model
 							, @RequestParam(value="currentPage", defaultValue = "1") int currentPage

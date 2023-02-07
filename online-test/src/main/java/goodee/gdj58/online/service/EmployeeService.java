@@ -31,8 +31,8 @@ public class EmployeeService {
 		return employeeMapper.updateEmployeePw(paramMap);
 	}	
 	
-	public Employee login(Employee emp) {
-		return employeeMapper.login(emp);
+	public Employee loginEmp(Employee emp) {
+		return employeeMapper.loginEmp(emp);
 	}	
 	
 	public int removeEmployee(int empNo) {
@@ -76,7 +76,7 @@ public class EmployeeService {
 		return studentMapper.selectStudentList(paramMap);
 	}
 	public int cntStudentList(String searchWord) {
-		return employeeMapper.cntStudentList(searchWord);
+		return studentMapper.cntStudentList(searchWord);
 	}
 	// Student End
 	
@@ -99,7 +99,7 @@ public class EmployeeService {
 		return teacherMapper.selectTeacherList(paramMap);
 	}
 	public int cntTeacherList(String searchWord) {
-		return employeeMapper.cntTeacherList(searchWord);
+		return teacherMapper.cntTeacherList(searchWord);
 	}
 	// Teacher End
 }
