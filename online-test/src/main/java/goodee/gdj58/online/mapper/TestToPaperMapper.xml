@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.TestToPaperMapper">
-
+	
+	<!-- Test Begin -->
 	<delete id="deleteTest" parameterType="int">
 		DELETE FROM test
 		WHERE test_no = #{testNo}
@@ -42,5 +43,104 @@
 			</if>
 		</where>
 	</select>
-
+	<!-- Test End -->
+	
+	<!-- Question Begin -->
+	<delete id="deleteQuestion" parameterType="int">
+		DELETE FROM question
+		WHERE question_no = #{questionNo}
+	</delete>
+	
+	<insert id="insertQuestion" parameterType="goodee.gdj58.online.vo.Question">
+		INSERT INTO question (
+			test_no
+			, question_idx
+			, question_title
+		) VALUES (
+			#{testNo}
+			,#{questionIdx}
+			,#{questionTitle}
+		)
+	</insert>
+	
+	<select id="selectQuestionList" 
+		resultType="goodee.gdj58.online.vo.Question"
+		parameterType="java.util.Map">
+		
+		SELECT
+			question_no questionNo
+			, test_no testNo
+			, question_idx questionIdx
+			, question_title questionTitle
+		FROM question
+		WHERE test_no = #{testNo}
+		ORDER BY question_idx DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<select id="cntQuestionList"
+		resultType="int"
+		parameterType="java.util.Map">
+		
+		SELECT COUNT(*) count
+		FROM question
+		<where>
+			test_no = #{testNo}
+			<if test="searchWord != null || searchWord !=''">
+				And question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+	<!-- Question End -->
+	
+	<!-- Example Begin -->
+	<delete id="deleteExample" parameterType="int">
+		DELETE FROM example
+		WHERE example_no = #{exampleNo}
+	</delete>
+	
+	<insert id="insertExample" parameterType="goodee.gdj58.online.vo.Example">
+		INSERT INTO example (
+			question_no
+			, example_idx
+			, example_title
+			, example_ox
+		) VALUES (
+			#{questionNo}
+			,#{exampleIdx}
+			,#{exampleTitle}
+			,#{exampleOx}
+		)
+	</insert>
+	
+	<select id="selectExampleList" 
+		resultType="goodee.gdj58.online.vo.Example"
+		parameterType="java.util.Map">
+		
+		SELECT
+			example_no exampleNo
+			, question_no questionNo
+			, example_idx exampleIdx
+			, example_title exampleTitle
+			, example_ox exampleOx
+		FROM example
+		WHERE question_no = #{questionNo}
+		ORDER BY example_idx DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<select id="cntExampleList"
+		resultType="int"
+		parameterType="java.util.Map">
+		
+		SELECT COUNT(*) count
+		FROM example
+		<where>
+			question_no = #{questionNo}
+			<if test="searchWord != null || searchWord !=''">
+				And example_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+	<!-- Example End -->
 </mapper>

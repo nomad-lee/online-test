@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import goodee.gdj58.online.mapper.TestToPaperMapper;
+import goodee.gdj58.online.vo.Example;
+import goodee.gdj58.online.vo.Question;
 import goodee.gdj58.online.vo.Test;
 
 @Service
@@ -16,7 +18,7 @@ import goodee.gdj58.online.vo.Test;
 public class TestToPaperService {
 	@Autowired private TestToPaperMapper testToPaperMapper;
 	
-	// Test
+	// Test Begin
 	public int removeTest(int testNo) {
 		return testToPaperMapper.deleteTest(testNo);
 	}
@@ -37,8 +39,59 @@ public class TestToPaperService {
 	public int cntTestList(String searchWord) {
 		return testToPaperMapper.cntTestList(searchWord);
 	}
+	// Test End
 	
-	// Question
-	// Example
-	// Paper
+	// Question Begin
+	public int removeQuestion(int questionNo) {
+		return testToPaperMapper.deleteQuestion(questionNo);
+	}
+	
+	public int addQuestion(Question question) {
+		return testToPaperMapper.insertQuestion(question);
+	}
+	
+	public List<Question> getQuestionList(int testNo, int currentPage, int rowPerPage, String searchWord) {
+		int beginRow = (currentPage-1)*rowPerPage;
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("testNo", testNo);
+		paramMap.put("beginRow", beginRow);
+		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
+		return testToPaperMapper.selectQuestionList(paramMap);
+	}
+	
+	public int cntQuestionList(int testNo, String searchWord) {
+		return testToPaperMapper.cntQuestionList(testNo, searchWord);
+	}
+	// Question End
+	
+	
+	// Example Begin
+	public int removeExample(int exampleNo) {
+		return testToPaperMapper.deleteExample(exampleNo);
+	}
+	
+	public int addExample(Example example) {
+		return testToPaperMapper.insertExample(example);
+	}
+	
+	public List<Example> getExampleList(int questionNo, int currentPage, int rowPerPage, String searchWord) {
+		int beginRow = (currentPage-1)*rowPerPage;
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("questionNo", questionNo);
+		paramMap.put("beginRow", beginRow);
+		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
+		return testToPaperMapper.selectExampleList(paramMap);
+	}
+	
+	public int cntExampleList(int questionNo, String searchWord) {
+		return testToPaperMapper.cntExampleList(questionNo, searchWord);
+	}
+	// Example End
+	
+	
+	// Paper Begin
+	
+	// Paper End
 }

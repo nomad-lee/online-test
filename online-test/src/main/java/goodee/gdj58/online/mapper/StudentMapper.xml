@@ -47,6 +47,11 @@
 			, student_id studentId
 			, student_name studentName
 		FROM student
+		<where>
+			<if test="searchWord != null || searchWord !=''">
+				student_name like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
 		ORDER BY student_no DESC
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>

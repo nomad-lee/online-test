@@ -87,18 +87,26 @@ public class EmployeeController {
 		log.debug("\u001B[31m"+currentPage+" <-- currentPage");
 		log.debug("\u001B[31m"+rowPerPage+" <-- rowPerPage");
 		log.debug("\u001B[31m"+searchWord+" <-- searchWord");
-		List<Employee> list = employeeService.getEmployeeList(currentPage, rowPerPage, searchWord);
+		List<Employee> list = employeeService.getEmployeeList(currentPage, rowPerPage, searchWord); // 한 페이지 10개의 컬럼
+		int cntEmpList = employeeService.cntEmpList(searchWord); // 총 페이지
+		int beginPaging = ((currentPage-1)/10)*10+1; // 10단위 페이징
+		int endPaging = beginPaging + 10 - 1; // 10단위 페이징
+		int lastPage = (int)Math.ceil(cntEmpList/(double)10); // 마지막 페이지
+		if(endPaging > lastPage){	// 마지막 페이지 처리
+			endPaging = lastPage;
+		}	
+		log.debug("\u001B[31m"+cntEmpList+" <-- cntEmpList");
+		log.debug("\u001B[31m"+beginPaging+" <-- beginPaging");
+		log.debug("\u001B[31m"+endPaging+" <-- endPaging");
+		log.debug("\u001B[31m"+lastPage+" <-- lastPage");
+		
 		// request.setAttribute("list", list);
 		model.addAttribute("list", list);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("searchWord", searchWord);
-		int cntEmpList = employeeService.cntEmpList(searchWord);
-		int endPage = cntEmpList / rowPerPage;
-		if(cntEmpList % rowPerPage != 0) {
-			endPage++;
-		}
-		model.addAttribute("startPage", 1);
-		model.addAttribute("endPage", endPage);
+		model.addAttribute("beginPaging", beginPaging);
+		model.addAttribute("endPaging", endPaging);
+		model.addAttribute("lastPage", lastPage);
 		return "employee/empList";
 	}
 	// Employee End
@@ -146,17 +154,26 @@ public class EmployeeController {
 		log.debug("\u001B[31m"+currentPage+" <-- currentPage");
 		log.debug("\u001B[31m"+rowPerPage+" <-- rowPerPage");
 		log.debug("\u001B[31m"+searchWord+" <-- searchWord");
-		List<Student> list = employeeService.getStudentList(currentPage, rowPerPage, searchWord);
+		List<Student> list = employeeService.getStudentList(currentPage, rowPerPage, searchWord); // 한 페이지 10개의 컬럼
+		int cntStudentList = employeeService.cntStudentList(searchWord); // 총 페이지
+		int beginPaging = ((currentPage-1)/10)*10+1; // 10단위 페이징
+		int endPaging = beginPaging + 10 - 1; // 10단위 페이징
+		int lastPage = (int)Math.ceil(cntStudentList/(double)10);
+		if(endPaging > lastPage){	// 마지막 페이지 처리
+			endPaging = lastPage;
+		}	
+		log.debug("\u001B[31m"+cntStudentList+" <-- cntStudentList");
+		log.debug("\u001B[31m"+beginPaging+" <-- beginPaging");
+		log.debug("\u001B[31m"+endPaging+" <-- endPaging");
+		log.debug("\u001B[31m"+lastPage+" <-- lastPage");
+		
 		// request.setAttribute("list", list);
 		model.addAttribute("list", list);
 		model.addAttribute("currentPage", currentPage);
-		int cntStudentList = employeeService.cntStudentList(searchWord);
-		int endPage = cntStudentList / rowPerPage;
-		if(cntStudentList % rowPerPage != 0) {
-			endPage++;
-		}
-		model.addAttribute("startPage", 1);
-		model.addAttribute("endPage", endPage);
+		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("beginPaging", beginPaging);
+		model.addAttribute("endPaging", endPaging);
+		model.addAttribute("lastPage", lastPage);
 		return "employee/student/studentList";
 	}
 	// Student End	
@@ -205,17 +222,26 @@ public class EmployeeController {
 		log.debug("\u001B[31m"+currentPage+" <-- currentPage");
 		log.debug("\u001B[31m"+rowPerPage+" <-- rowPerPage");
 		log.debug("\u001B[31m"+searchWord+" <-- searchWord");
-		List<Teacher> list = employeeService.getTeacherList(currentPage, rowPerPage, searchWord);
+		List<Teacher> list = employeeService.getTeacherList(currentPage, rowPerPage, searchWord); // 한 페이지 10개의 컬럼
+		int cntTeacherList = employeeService.cntTeacherList(searchWord); // 총 페이지
+		int beginPaging = ((currentPage-1)/10)*10+1; // 10단위 페이징
+		int endPaging = beginPaging + 10 - 1; // 10단위 페이징
+		int lastPage = (int)Math.ceil(cntTeacherList/(double)10);
+		if(endPaging > lastPage){	// 마지막 페이지 처리
+			endPaging = lastPage;
+		}	
+		log.debug("\u001B[31m"+cntTeacherList+" <-- cntTeacherList");
+		log.debug("\u001B[31m"+beginPaging+" <-- beginPaging");
+		log.debug("\u001B[31m"+endPaging+" <-- endPaging");
+		log.debug("\u001B[31m"+lastPage+" <-- lastPage");
+		
 		// request.setAttribute("list", list);
 		model.addAttribute("list", list);
 		model.addAttribute("currentPage", currentPage);
-		int cntTeacherList = employeeService.cntTeacherList(searchWord);
-		int endPage = cntTeacherList / rowPerPage;
-		if(cntTeacherList % rowPerPage != 0) {
-			endPage++;
-		}
-		model.addAttribute("startPage", 1);
-		model.addAttribute("endPage", endPage);
+		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("beginPaging", beginPaging);
+		model.addAttribute("endPaging", endPaging);
+		model.addAttribute("lastPage", lastPage);
 		return "employee/teacher/teacherList";
 	}
 	// Teacher End

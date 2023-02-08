@@ -44,7 +44,7 @@ public class EmployeeService {
 	}
 	
 	public List<Employee> getEmployeeList(int currentPage, int rowPerPage, String searchWord) {
-		int beginRow = (currentPage-1)*rowPerPage;
+		int beginRow = (currentPage-1)*rowPerPage; // 리스트에 보일 컬럼 수
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);

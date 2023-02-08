@@ -4,9 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>Insert title here</title>
 </head>
 <body>
+	<!-- teacherMenu include -->
+	<div>
+		<c:import url="/WEB-INF/view/teacher/inc/teacherMenu.jsp"></c:import>
+	</div>
+	
 	<h1>${loginTeacher.teacherName}님 비밀번호 수정</h1>
 	<form method="post" action="${pageContext.request.contextPath}/teacher/modifyTeacherPw">
 		<table border="1">

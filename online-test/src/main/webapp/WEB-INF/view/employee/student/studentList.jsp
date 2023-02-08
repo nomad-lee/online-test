@@ -36,39 +36,25 @@
 		<input type="text" name="searchWord">
 		<button type="submit">이름검색</button>
 	</form>
+	<!-- 페이징 -->
 	<div>
-		<c:if test="${currentPage > 0 and currentPage <= endPage}">
-			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${1}&searchWord=${searchWord}">처음으로</a>
-			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage-1}&searchWord=${searchWord}">이전</a>				      
-			<c:if test="${endPage - currentPage <= 0 and endPage > 4}">
-				<a class="page-link" href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage-4}&searchWord=${searchWord}">${currentPage-4}</a>
-			</c:if>		    	
-			<c:if test="${endPage - currentPage <= 1 and endPage > 3}">
-		    	<a class="page-link" href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage-3}&searchWord=${searchWord}">${currentPage-3}</a>
-	    	</c:if>		    	
-			<c:if test="${currentPage >= 3}">
-				<a class="page-link" href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage-2}&searchWord=${searchWord}">${currentPage-2}</a>
-	    	</c:if>		    	
-			<c:if test="${currentPage >= 2}">
-				<a class="page-link" href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage-1}&searchWord=${searchWord}">${currentPage-1}</a>
-	    	</c:if>
-			<c:if test="${currentPage > 0}">
-				<a class="page-link" style="color: red" href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage}&searchWord=${searchWord}">${currentPage}</a>
-	    	</c:if>
-			<c:if test="${endPage - currentPage >= 1}">
-				<a class="page-link" href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage+1}&searchWord=${searchWord}">${currentPage+1}</a>
-	    	</c:if>
-			<c:if test="${endPage - currentPage >= 2}">
-				<a class="page-link" href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage+2}&searchWord=${searchWord}">${currentPage+2}</a>
-	    	</c:if>
-			<c:if test="${currentPage <= 2 and endPage > 3}">
-	   	 		<a class="page-link" href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage+3}&searchWord=${searchWord}">${currentPage+3}</a>
-	    	</c:if>
-			<c:if test="${currentPage <= 1 and endPage > 4}">
-	    		<a class="page-link" href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage+4}&searchWord=${searchWord}">${currentPage+4}</a>
-    		</c:if>
-			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage+1}&searchWord=${searchWord}">다음</a>
-			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${endPage}&searchWord=${searchWord}">끝으로</a>
+		<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=1&searchWord=${searchWord}">처음</a>
+		<c:if test="${currentPage > 10}">
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${beginPaging-10}&searchWord=${searchWord}">이전</a>
+		</c:if>
+		<c:forEach var="i" begin="${beginPaging}" end="${endPaging}">
+			<c:if test="${currentPage eq i}">
+				<a style="color: red" href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${i}&searchWord=${searchWord}">${i}</a>
+			</c:if>
+			<c:if test="${currentPage ne i}">
+				<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${i}&searchWord=${searchWord}">${i}</a>
+			</c:if>
+		</c:forEach>
+		<c:if test="${endPaging < lastPage}">
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${beginPaging+10}&searchWord=${searchWord}">다음</a>
+		</c:if>		
+		<c:if test="${currentPage <= lastPage}">
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${lastPage}&searchWord=${searchWord}">마지막</a>
 		</c:if>
 	</div>
 </body>
