@@ -27,7 +27,7 @@
 			</tr>
 			<tr>
 				<td>exampleOx</td>
-				<td><input type="date" name="exampleOx"></td>
+				<td><input type="text" name="exampleOx"></td>
 			</tr>	
 		</table>
 		<button type="submit">선택지추가</button>
