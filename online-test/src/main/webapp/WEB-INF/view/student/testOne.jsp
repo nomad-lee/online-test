@@ -12,11 +12,10 @@
 		<c:import url="/WEB-INF/view/teacher/inc/teacherMenu.jsp"></c:import>
 	</div>
 	
-	<h1>Test List</h1>
-	<a href="${pageContext.request.contextPath}/teacher/addTest">시험등록</a>
+	<h1>${param.testTitle}</h1>
 	<table border="1">
 		<tr>
-			<th>testTitle</th>
+			<th>${questionIdx}</th>
 			<th>testDate</th>
 			<th>삭제</th>
 		</tr>

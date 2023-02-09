@@ -10,12 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import goodee.gdj58.online.service.EmployeeService;
 import goodee.gdj58.online.service.IdService;
 import goodee.gdj58.online.service.TeacherService;
 import goodee.gdj58.online.service.TestToPaperService;
-import goodee.gdj58.online.vo.Employee;
 import goodee.gdj58.online.vo.Example;
 import goodee.gdj58.online.vo.Question;
 import goodee.gdj58.online.vo.Teacher;
@@ -114,8 +113,12 @@ public class TeacherController {
 	// Question Begin
 	// Question 삭제
 	@GetMapping("/teacher/removeQuestion")
-	public String removeQuestion(HttpSession session, @RequestParam("questionNo") int questionNo) {		
+	public String removeQuestion(HttpSession session, RedirectAttributes redirect
+							, @RequestParam(value="questionNo", defaultValue = "0") int questionNo
+							, @RequestParam(value="testNo", defaultValue = "0") int testNo) {		
 		testToPaperService.removeQuestion(questionNo);
+		redirect.addAttribute("testNo", testNo);
+		log.debug("\u001B[31m"+testNo+" <-- testNo for removeQuestion");
 		return "redirect:/teacher/questionList"; // 리스트로 리다이렉트
 	}
 	
@@ -123,19 +126,22 @@ public class TeacherController {
 	@GetMapping("/teacher/addQuestion")
 	public String addQuestion(HttpSession session, Model model
 							, @RequestParam(value="testNo", defaultValue = "0") int testNo) {
-		
+
+		log.debug("\u001B[31m"+testNo+" <-- testNo for addQuestion");
 		model.addAttribute("testNo", testNo);
 		return "teacher/addQuestion"; // forward
 	}
 	
 	@PostMapping("/teacher/addQuestion")
-	public String addQuestion(HttpSession session, Model model, Question question) {		
-		
+	public String addQuestion(HttpSession session, RedirectAttributes redirect, Model model, Question question) {		
+
+		log.debug("\u001B[31m"+question.getTestNo()+" <-- testNo for Post addQuestion");
 		int row = testToPaperService.addQuestion(question);
 		if(row == 0) {
 			model.addAttribute("errorMsg", "시스템에러로 등록실패");
 			return "teacher/addQuestion";
 		}
+		redirect.addAttribute("testNo", question.getTestNo());
 		return "redirect:/teacher/questionList"; // sendRedirect , CM -> C
 	}
 	
@@ -174,6 +180,7 @@ public class TeacherController {
 		model.addAttribute("beginPaging", beginPaging);
 		model.addAttribute("endPaging", endPaging);
 		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("testNo", testNo);
 		return "teacher/questionList";
 	}
 	// Question End
@@ -181,28 +188,35 @@ public class TeacherController {
 	// Example Begin
 	// Example 삭제
 	@GetMapping("/teacher/removeExample")
-	public String exampleTest(HttpSession session, @RequestParam("exampleNo") int exampleNo) {		
+	public String removeExample(HttpSession session, RedirectAttributes redirect
+							, @RequestParam(value="exampleNo", defaultValue = "0") int exampleNo
+							, @RequestParam(value="questionNo", defaultValue = "0") int questionNo) {		
 		testToPaperService.removeExample(exampleNo);
+		redirect.addAttribute("questionNo", questionNo);
+		log.debug("\u001B[31m"+questionNo+" <-- questionNo for removeExample");
 		return "redirect:/teacher/exampleList"; // 리스트로 리다이렉트
 	}
 	
 	// Example 입력
 	@GetMapping("/teacher/addExample")
 	public String addExample(HttpSession session, Model model
-			, @RequestParam(value="questionNo", defaultValue = "0") int questionNo) {
-		
+							, @RequestParam(value="questionNo", defaultValue = "0") int questionNo) {
+
+		log.debug("\u001B[31m"+questionNo+" <-- questionNo for addExample");
 		model.addAttribute("questionNo", questionNo);
 		return "teacher/addExample"; // forward
 	}
 	
 	@PostMapping("/teacher/addExample")
-	public String addExample(HttpSession session, Model model, Example example) {		
-		
+	public String addExample(HttpSession session, RedirectAttributes redirect, Model model, Example example) {		
+
+		log.debug("\u001B[31m"+example.getQuestionNo()+" <-- questionNo for Post addExample");
 		int row = testToPaperService.addExample(example);
 		if(row == 0) {
 			model.addAttribute("errorMsg", "시스템에러로 등록실패");
 			return "teacher/addExample";
 		}
+		redirect.addAttribute("questionNo", example.getQuestionNo());
 		return "redirect:/teacher/exampleList"; // sendRedirect , CM -> C
 	}
 	
@@ -240,7 +254,10 @@ public class TeacherController {
 		model.addAttribute("beginPaging", beginPaging);
 		model.addAttribute("endPaging", endPaging);
 		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("questionNo", questionNo);
 		return "teacher/exampleList";
 	}
 	// Example End
+	
+
 }

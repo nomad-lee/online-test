@@ -27,6 +27,11 @@
 			, test_title testTitle
 			, test_date testDate
 		FROM test
+		<where>
+			<if test="searchWord != null || searchWord !=''">
+				test_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
 		ORDER BY test_no DESC
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
@@ -73,7 +78,12 @@
 			, question_idx questionIdx
 			, question_title questionTitle
 		FROM question
-		WHERE test_no = #{testNo}
+		<where>
+			test_no = #{testNo}
+			<if test="searchWord != null || searchWord !=''">
+				AND question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
 		ORDER BY question_idx DESC
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
@@ -87,7 +97,7 @@
 		<where>
 			test_no = #{testNo}
 			<if test="searchWord != null || searchWord !=''">
-				And question_title like CONCAT('%',#{searchWord},'%')
+				AND question_title like CONCAT('%',#{searchWord},'%')
 			</if>
 		</where>
 	</select>
@@ -124,7 +134,12 @@
 			, example_title exampleTitle
 			, example_ox exampleOx
 		FROM example
-		WHERE question_no = #{questionNo}
+		<where>
+			question_no = #{questionNo}
+			<if test="searchWord != null || searchWord !=''">
+				AND example_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
 		ORDER BY example_idx DESC
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
@@ -138,9 +153,13 @@
 		<where>
 			question_no = #{questionNo}
 			<if test="searchWord != null || searchWord !=''">
-				And example_title like CONCAT('%',#{searchWord},'%')
+				AND example_title like CONCAT('%',#{searchWord},'%')
 			</if>
 		</where>
 	</select>
 	<!-- Example End -->
+	
+	<!-- Paper Begin -->
+	
+	<!-- Paper End -->
 </mapper>

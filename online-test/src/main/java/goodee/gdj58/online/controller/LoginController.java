@@ -30,9 +30,9 @@ public class LoginController {
 		if(loginEmp != null) {
 			return "redirect:/employee/empList";
 		} else if(loginStudent != null) {
-			System.out.println("loginStudent");
+			return "redirect:/student/paperList";
 		} else if(loginTeacher != null) {
-			System.out.println("loginTeacher");			
+			return "redirect:/teacher/testList";		
 		}
 		return "login";
 	}
@@ -47,12 +47,12 @@ public class LoginController {
 	}	
 	
 	// 2. student 로그인
-	@PostMapping("/loginStdnet")
+	@PostMapping("/loginStudent")
 	public String loginStudent(HttpSession session, Student student) {
 		Student resultStudent = studentService.loginStudent(student);
 		
 		session.setAttribute("loginStudent", resultStudent);
-		return "redirect:/employee/empList";
+		return "redirect:/student/paperList";
 	}	
 	
 	// 3. teacher 로그인

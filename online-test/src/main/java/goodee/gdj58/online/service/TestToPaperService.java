@@ -1,5 +1,6 @@
 package goodee.gdj58.online.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,11 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import goodee.gdj58.online.controller.employee.TeacherController;
 import goodee.gdj58.online.mapper.TestToPaperMapper;
 import goodee.gdj58.online.vo.Example;
 import goodee.gdj58.online.vo.Question;
 import goodee.gdj58.online.vo.Test;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 public class TestToPaperService {
@@ -57,6 +61,10 @@ public class TestToPaperService {
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
 		paramMap.put("searchWord", searchWord);
+		log.debug("\u001B[31m"+testNo+" <-- testNo");
+		log.debug("\u001B[31m"+beginRow+" <-- beginRow");
+		log.debug("\u001B[31m"+rowPerPage+" <-- rowPerPage");
+		log.debug("\u001B[31m"+searchWord+" <-- searchWord");
 		return testToPaperMapper.selectQuestionList(paramMap);
 	}
 	
@@ -91,7 +99,24 @@ public class TestToPaperService {
 	// Example End
 	
 	
-	// Paper Begin
-	
+	// Paper Begin	
+	public List<Question> getQuestionList(int testNo) {
+		int beginRow = 0;
+		String rowPerPage = "MAX";
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("testNo", testNo);
+		paramMap.put("beginRow", beginRow);
+		paramMap.put("rowPerPage", rowPerPage);
+		return testToPaperMapper.selectQuestionList(paramMap);
+	}
+	public List<Example> getExampleList(int questionNo) {
+		int beginRow = 0;
+		String rowPerPage = "MAX";
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("questionNo", questionNo);
+		paramMap.put("beginRow", beginRow);
+		paramMap.put("rowPerPage", rowPerPage);
+		return testToPaperMapper.selectExampleList(paramMap);
+	}
 	// Paper End
 }

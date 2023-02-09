@@ -32,7 +32,7 @@
 				</tr>
 				<tr>
 					<td>studentpPw</td>
-					<td><input type="password" name="studentpPw"></td>
+					<td><input type="password" name="studentPw"></td>
 				</tr>
 			</table>
 			<button type="submit">로그인</button>

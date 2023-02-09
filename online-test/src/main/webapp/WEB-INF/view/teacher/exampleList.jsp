@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +27,7 @@
 				<td>${e.exampleTitle}</td>
 				<td>${e.exampleOx}</td>
 				<td>
-					<a href="${pageContext.request.contextPath}/teacher/removeExample?exampleNo=${e.exampleNo}">
+					<a href="${pageContext.request.contextPath}/teacher/removeExample?exampleNo=${e.exampleNo}&questionNo=${e.questionNo}">
 						삭제
 					</a>
 				</td>
@@ -35,6 +35,7 @@
 		</c:forEach>
 	</table>
 	<form method="get" action="${pageContext.request.contextPath}/teacher/exampleList">
+		<input type="hidden" name="questionNo" value="${questionNo}">
 		<input type="text" name="searchWord">
 		<button type="submit">시험검색</button>
 	</form>

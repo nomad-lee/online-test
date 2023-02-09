@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +13,7 @@
 	</div>
 	
 	<h1>Question List</h1>
-	<a href="${pageContext.request.contextPath}/teacher/addQuestion?testNo=${list[0].testNo}">문제등록</a>
+	<a href="${pageContext.request.contextPath}/teacher/addQuestion?testNo=${testNo}">문제등록</a>
 	<table border="1">
 		<tr>
 			<th>questionIdx</th>
@@ -29,7 +29,7 @@
 				</td>
 				<td>${q.questionTitle}</td>
 				<td>
-					<a href="${pageContext.request.contextPath}/teacher/removeQuestion?questionNo=${q.questionNo}">
+					<a href="${pageContext.request.contextPath}/teacher/removeQuestion?questionNo=${q.questionNo}&testNo=${q.testNo}">
 						삭제
 					</a>
 				</td>
@@ -37,6 +37,7 @@
 		</c:forEach>
 	</table>
 	<form method="get" action="${pageContext.request.contextPath}/teacher/questionList">
+		<input type="hidden" name="testNo" value="${testNo}">
 		<input type="text" name="searchWord">
 		<button type="submit">시험검색</button>
 	</form>

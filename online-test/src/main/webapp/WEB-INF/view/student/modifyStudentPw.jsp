@@ -4,9 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>Insert title here</title>
 </head>
 <body>
+	<!-- studentMenu include -->
+	<div>
+		<c:import url="/WEB-INF/view/student/inc/studentMenu.jsp"></c:import>
+	</div>
+	
 	<h1>${loginStudent.studentName}님 비밀번호 수정</h1>
 	<form method="post" action="${pageContext.request.contextPath}/student/modifyStudentPw">
 		<table border="1">
