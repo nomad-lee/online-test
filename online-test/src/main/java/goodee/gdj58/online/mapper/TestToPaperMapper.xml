@@ -84,7 +84,7 @@
 				AND question_title like CONCAT('%',#{searchWord},'%')
 			</if>
 		</where>
-		ORDER BY question_idx DESC
+		ORDER BY question_idx ASC
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	
@@ -140,7 +140,7 @@
 				AND example_title like CONCAT('%',#{searchWord},'%')
 			</if>
 		</where>
-		ORDER BY example_idx DESC
+		ORDER BY example_idx ASC
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	

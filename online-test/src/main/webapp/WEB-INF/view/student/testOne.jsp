@@ -9,56 +9,29 @@
 <body>
 	<!-- teacherMenu include -->
 	<div>
-		<c:import url="/WEB-INF/view/teacher/inc/teacherMenu.jsp"></c:import>
+		<c:import url="/WEB-INF/view/student/inc/studentMenu.jsp"></c:import>
 	</div>
 	
-	<h1>${param.testTitle}</h1>
-	<table border="1">
-		<tr>
-			<th>${questionIdx}</th>
-			<th>testDate</th>
-			<th>삭제</th>
-		</tr>
-		<c:forEach var="t" items="${list}">
+	<h1>test</h1>
+	<form method="post" action="${pageContext.request.contextPath}/student/paperOne">
+		<table border="1">
 			<tr>
-				<td>
-					<a href="${pageContext.request.contextPath}/teacher/questionList?testNo=${t.testNo}">
-						${t.testTitle}
-					</a>				
-				</td>
-				<td>${t.testDate}</td>
-				<td>
-					<a href="${pageContext.request.contextPath}/teacher/removeTest?testNo=${t.testNo}">
-						삭제
-					</a>
-				</td>
+				<c:forEach var="q" items="${question}">
+					<tr>
+						<th>${q.questionIdx}. ${q.questionTitle}</th>
+					</tr>
+					<c:forEach var="e" items="${example}">
+						<tr>
+							<td>
+		      					<input type="radio" name="exampleNo" value="${e.exampleNo}">
+		      					<label for="exampleNo">${e.exampleIdx}. ${e.exampleTitle}</label>
+							</td>
+						</tr>
+					</c:forEach>
+				</c:forEach>
 			</tr>
-		</c:forEach>
-	</table>
-	<form method="get" action="${pageContext.request.contextPath}/teacher/testList">
-		<input type="text" name="searchWord">
-		<button type="submit">시험검색</button>
+		</table>		
+		<button type="submit">답안제출</button>
 	</form>
-	<!-- 페이징 -->
-	<div>
-		<a href="${pageContext.request.contextPath}/teacher/testList?currentPage=1&searchWord=${searchWord}">처음</a>
-		<c:if test="${currentPage > 10}">
-			<a href="${pageContext.request.contextPath}/teacher/testList?currentPage=${beginPaging-10}&searchWord=${searchWord}">이전</a>
-		</c:if>
-		<c:forEach var="i" begin="${beginPaging}" end="${endPaging}">
-			<c:if test="${currentPage eq i}">
-				<a style="color: red" href="${pageContext.request.contextPath}/teacher/testList?currentPage=${i}&searchWord=${searchWord}">${i}</a>
-			</c:if>
-			<c:if test="${currentPage ne i}">
-				<a href="${pageContext.request.contextPath}/teacher/testList?currentPage=${i}&searchWord=${searchWord}">${i}</a>
-			</c:if>
-		</c:forEach>
-		<c:if test="${endPaging < lastPage}">
-			<a href="${pageContext.request.contextPath}/teacher/testList?currentPage=${beginPaging+10}&searchWord=${searchWord}">다음</a>
-		</c:if>		
-		<c:if test="${currentPage <= lastPage}">
-			<a href="${pageContext.request.contextPath}/teacher/testList?currentPage=${lastPage}&searchWord=${searchWord}">마지막</a>
-		</c:if>
-	</div>
 </body>
 </html>

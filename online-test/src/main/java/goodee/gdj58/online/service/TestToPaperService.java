@@ -102,20 +102,25 @@ public class TestToPaperService {
 	// Paper Begin	
 	public List<Question> getQuestionList(int testNo) {
 		int beginRow = 0;
-		String rowPerPage = "MAX";
+		int rowPerPage = 9999;
+		String searchWord = "";
 		Map<String, Object> paramMap = new HashMap<String, Object>();
+		log.debug("\u001B[31m"+paramMap+" <-- paramMap");
 		paramMap.put("testNo", testNo);
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
 		return testToPaperMapper.selectQuestionList(paramMap);
 	}
 	public List<Example> getExampleList(int questionNo) {
 		int beginRow = 0;
-		String rowPerPage = "MAX";
+		int rowPerPage = 9999;
+		String searchWord = "";
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("questionNo", questionNo);
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
 		return testToPaperMapper.selectExampleList(paramMap);
 	}
 	// Paper End

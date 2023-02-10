@@ -102,6 +102,8 @@ public class StudentController {
 		for(int i=0; i<question.size(); i++) {
 			example = testToPaperService.getExampleList(question.get(i).getQuestionNo());
 		}
+		log.debug("\u001B[31m"+question+" <-- question");
+		log.debug("\u001B[31m"+example+" <-- example");
 		
 		// request.setAttribute("list", list);
 		//model.addAttribute("test", test.get(testNo).getTestTitle());
