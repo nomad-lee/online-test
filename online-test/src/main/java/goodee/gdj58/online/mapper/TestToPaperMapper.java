@@ -30,4 +30,6 @@ public interface TestToPaperMapper {
 	List<Example> selectExampleList(Map<String, Object> paramMap);
 	int cntExampleList(@Param("questionNo") int questionNo, @Param("searchWord") String searchWord);
 
+	// Paper
+	
 }

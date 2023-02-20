@@ -14,11 +14,11 @@
 			<table border="1">
 				<tr>
 					<td>empId</td>
-					<td><input type="text" name="empId"></td>
+					<td><input type="text" name="empId" value="admin"></td>
 				</tr>
 				<tr>
 					<td>empPw</td>
-					<td><input type="password" name="empPw"></td>
+					<td><input type="password" name="empPw" value="1234"></td>
 				</tr>
 			</table>
 			<button type="submit">로그인</button>
@@ -28,11 +28,11 @@
 			<table border="1">
 				<tr>
 					<td>studentId</td>
-					<td><input type="text" name="studentId"></td>
+					<td><input type="text" name="studentId" value="student"></td>
 				</tr>
 				<tr>
 					<td>studentpPw</td>
-					<td><input type="password" name="studentPw"></td>
+					<td><input type="password" name="studentPw" value="1234"></td>
 				</tr>
 			</table>
 			<button type="submit">로그인</button>
@@ -42,11 +42,11 @@
 			<table border="1">
 				<tr>
 					<td>teacherId</td>
-					<td><input type="text" name="teacherId"></td>
+					<td><input type="text" name="teacherId" value="teacher"></td>
 				</tr>
 				<tr>
 					<td>teacherPw</td>
-					<td><input type="password" name="teacherPw"></td>
+					<td><input type="password" name="teacherPw" value="1234"></td>
 				</tr>
 			</table>
 			<button type="submit">로그인</button>

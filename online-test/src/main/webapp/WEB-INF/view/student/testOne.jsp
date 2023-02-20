@@ -30,7 +30,7 @@
 					</c:forEach>
 				</c:forEach>
 			</tr>
-		</table>		
+		</table>
 		<button type="submit">답안제출</button>
 	</form>
 </body>
