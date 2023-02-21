@@ -88,7 +88,7 @@ public class StudentController {
 	
 	
 	@GetMapping("/student/testOne")
-	public String testOnePage(HttpSession session, Model model
+	public String getTestOnePage(HttpSession session, Model model
 							, @RequestParam(value="testNo", defaultValue = "0") int testNo) { 
 							// int currentPage = reuqest.getParamenter("currentPage");
 
@@ -111,16 +111,14 @@ public class StudentController {
 		return "student/testOne";
 	}
 	
-	@GetMapping("/student/paperOne")
-	public String paperOnePage(HttpSession session, Model model
-							, @RequestParam(value="paperNo", defaultValue = "0") int testNo
-							, @RequestParam(value="studentNo", defaultValue = "0") int studentNo
-							, @RequestParam(value="questionNo", defaultValue = "0") int questionNo
-							, @RequestParam(value="answer", defaultValue = "0") int answer) {
+	@PostMapping("/student/testOne")
+	public String SendTestOnePage(HttpSession session, Model model
+							, @RequestParam(value="testNo", defaultValue = "0") int testNo
+							, @RequestParam(value="questionNo", defaultValue = "0") int exampleNo) {
 							// int currentPage = reuqest.getParamenter("currentPage");
 
-		log.debug("\u001B[31m"+testNo+" <-- testNo");
-		log.debug("\u001B[31m"+questionNo+" <-- questionNo");
+		log.debug("\u001B[31m"+testNo+" <-- questionNo");
+		log.debug("\u001B[31m"+exampleNo+" <-- questionNo");
 
 		//List<Test> test = testToPaperService.getTestList();
 		List<Question> question = testToPaperService.getQuestionList(testNo);
@@ -136,8 +134,33 @@ public class StudentController {
 		model.addAttribute("question", question);
 		model.addAttribute("example", example);;
 		model.addAttribute("testNo", testNo);
-		model.addAttribute("questionNo", questionNo);
-		return "student/testOne";
+		model.addAttribute("questionNo", exampleNo);
+		return "student/paperOne";
 	}
+	
+	@GetMapping("/student/paperOne")
+	public String testOnePage(HttpSession session, Model model
+							, @RequestParam(value="testNo", defaultValue = "0") int testNo) { 
+							// int currentPage = reuqest.getParamenter("currentPage");
+
+		log.debug("\u001B[31m"+testNo+" <-- testNo");
+
+		//List<Test> test = testToPaperService.getTestList();
+		List<Question> question = testToPaperService.getQuestionList(testNo);
+		List<Example> example = new ArrayList<Example>();
+		for(int i=0; i<question.size(); i++) {
+			example = testToPaperService.getExampleList(question.get(i).getQuestionNo());
+		}
+		log.debug("\u001B[31m"+question+" <-- question");
+		log.debug("\u001B[31m"+example+" <-- example");
+		
+		// request.setAttribute("list", list);
+		//model.addAttribute("test", test.get(testNo).getTestTitle());
+		model.addAttribute("question", question);
+		model.addAttribute("example", example);;
+		model.addAttribute("testNo", testNo);
+		return "student/paperOne";
+	}
+	
 	// Paper End
 }

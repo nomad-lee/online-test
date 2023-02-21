@@ -12,8 +12,9 @@
 		<c:import url="/WEB-INF/view/student/inc/studentMenu.jsp"></c:import>
 	</div>
 	
-	<h1>test</h1>
-	<form method="post" action="${pageContext.request.contextPath}/student/paperOne">
+	<h1>시험지</h1>
+	<form method="post" action="${pageContext.request.contextPath}/student/testOne">
+		<input type="hidden" name="testNo" value="${testNo}">
 		<table border="1">
 			<tr>
 				<c:forEach var="q" items="${question}">
@@ -23,7 +24,7 @@
 					<c:forEach var="e" items="${example}">
 						<tr>
 							<td>
-		      					<input type="radio" name="exampleNo" value="${e.exampleNo}">
+		      					<input type="radio" name="exampleNo${questionIdx}" value="${e.exampleNo}">
 		      					<label for="exampleNo">${e.exampleIdx}. ${e.exampleTitle}</label>
 							</td>
 						</tr>
