@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import goodee.gdj58.online.vo.Example;
 import goodee.gdj58.online.vo.Question;
+import goodee.gdj58.online.vo.QuestionAndExample;
 import goodee.gdj58.online.vo.Test;
 
 @Mapper
@@ -31,5 +32,7 @@ public interface TestToPaperMapper {
 	int cntExampleList(@Param("questionNo") int questionNo, @Param("searchWord") String searchWord);
 
 	// Paper
+	List<QuestionAndExample> selectTestForStudent(Map<String, Object> paramMap);
+	List<QuestionAndExample> selectPaper(Map<String, Object> paramMap);
 	
 }

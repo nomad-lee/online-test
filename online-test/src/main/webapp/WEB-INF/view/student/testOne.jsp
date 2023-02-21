@@ -21,7 +21,7 @@
 					<tr>
 						<th>${q.questionIdx}. ${q.questionTitle}</th>
 					</tr>
-					<c:forEach var="e" items="${example}">
+					<c:forEach var="e" items="${example}" begin="${4*(q.questionIdx)-4}">
 						<tr>
 							<td>
 		      					<input type="radio" name="exampleNo${questionIdx}" value="${e.exampleNo}">

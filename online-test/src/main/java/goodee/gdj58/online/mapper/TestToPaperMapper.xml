@@ -160,6 +160,44 @@
 	<!-- Example End -->
 	
 	<!-- Paper Begin -->
+	<select id="selectTestForStudent" 
+		resultType="goodee.gdj58.online.vo.QuestionAndExample"
+		parameterType="java.util.Map">
+		
+		SELECT
+			e.example_no exampleNo
+			, e.question_no questionNo
+			, e.example_idx exampleIdx
+			, e.example_title exampleTitle
+			, e.example_ox exampleOx
+			, q.question_idx questionIdx
+			, q.question_title questionTitle
+			, q.test_no testNo
+		FROM example e
+			INNER JOIN question q
+			ON e.question_no = q.question_no
+		WHERE q.test_no = #{testNo}
+		ORDER BY question_idx ASC
+	</select>
 	
+	<select id="selectPaper" 
+		resultType="goodee.gdj58.online.vo.QuestionAndExample"
+		parameterType="java.util.Map">
+		
+		SELECT
+			e.example_no exampleNo
+			, e.question_no questionNo
+			, e.example_idx exampleIdx
+			, e.example_title exampleTitle
+			, e.example_ox exampleOx
+			, q.question_idx questionIdx
+			, q.question_title questionTitle
+			, q.test_no testNo
+		FROM example e
+			INNER JOIN question q
+			ON e.question_no = q.question_no
+		WHERE question_no = #{questionNo}
+		ORDER BY example_idx ASC
+	</select>
 	<!-- Paper End -->
 </mapper>

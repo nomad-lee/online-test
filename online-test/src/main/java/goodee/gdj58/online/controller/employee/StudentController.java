@@ -19,6 +19,7 @@ import goodee.gdj58.online.service.TestToPaperService;
 import goodee.gdj58.online.vo.Employee;
 import goodee.gdj58.online.vo.Example;
 import goodee.gdj58.online.vo.Question;
+import goodee.gdj58.online.vo.QuestionAndExample;
 import goodee.gdj58.online.vo.Student;
 import goodee.gdj58.online.vo.Test;
 import lombok.extern.slf4j.Slf4j;
@@ -89,25 +90,28 @@ public class StudentController {
 	
 	@GetMapping("/student/testOne")
 	public String getTestOnePage(HttpSession session, Model model
-							, @RequestParam(value="testNo", defaultValue = "0") int testNo) { 
-							// int currentPage = reuqest.getParamenter("currentPage");
+			, @RequestParam(value="testNo", defaultValue = "0") int testNo
+			, @RequestParam(value="questionNo", defaultValue = "0") int exampleNo) {
+			// int currentPage = reuqest.getParamenter("currentPage");
 
-		log.debug("\u001B[31m"+testNo+" <-- testNo");
-
-		//List<Test> test = testToPaperService.getTestList();
-		List<Question> question = testToPaperService.getQuestionList(testNo);
-		List<Example> example = new ArrayList<Example>();
-		for(int i=0; i<question.size(); i++) {
-			example = testToPaperService.getExampleList(question.get(i).getQuestionNo());
-		}
-		log.debug("\u001B[31m"+question+" <-- question");
-		log.debug("\u001B[31m"+example+" <-- example");
-		
-		// request.setAttribute("list", list);
-		//model.addAttribute("test", test.get(testNo).getTestTitle());
-		model.addAttribute("question", question);
-		model.addAttribute("example", example);;
-		model.addAttribute("testNo", testNo);
+	log.debug("\u001B[31m"+testNo+" <-- questionNo");
+	log.debug("\u001B[31m"+exampleNo+" <-- questionNo");
+	
+	//List<Test> test = testToPaperService.getTestList();
+	List<Question> question = testToPaperService.getQuestionList(testNo);
+	List<Example> example = new ArrayList<Example>();
+	for(int i=0; i<question.size(); i++) {
+	example = testToPaperService.getExampleList(question.get(i).getQuestionNo()); // 다 가져와서 처리
+	}
+	log.debug("\u001B[31m"+question+" <-- question");
+	log.debug("\u001B[31m"+example+" <-- example");
+	
+	// request.setAttribute("list", list);
+	//model.addAttribute("test", test.get(testNo).getTestTitle());
+	model.addAttribute("question", question);
+	model.addAttribute("example", example);;
+	model.addAttribute("testNo", testNo);
+	model.addAttribute("questionNo", exampleNo);
 		return "student/testOne";
 	}
 	

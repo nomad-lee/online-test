@@ -13,6 +13,7 @@ import goodee.gdj58.online.controller.employee.TeacherController;
 import goodee.gdj58.online.mapper.TestToPaperMapper;
 import goodee.gdj58.online.vo.Example;
 import goodee.gdj58.online.vo.Question;
+import goodee.gdj58.online.vo.QuestionAndExample;
 import goodee.gdj58.online.vo.Test;
 import lombok.extern.slf4j.Slf4j;
 
@@ -122,6 +123,18 @@ public class TestToPaperService {
 		paramMap.put("rowPerPage", rowPerPage);
 		paramMap.put("searchWord", searchWord);
 		return testToPaperMapper.selectExampleList(paramMap);
+	}
+	public List<QuestionAndExample> getTestForStudent(int testNo) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("testNo", testNo);
+		return testToPaperMapper.selectTestForStudent(paramMap);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+
+	}
+	public List<QuestionAndExample> getPaperList(int questionNo) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("questionNo", questionNo);
+		return testToPaperMapper.selectPaper(paramMap);
+		
 	}
 	// Paper End
 }
