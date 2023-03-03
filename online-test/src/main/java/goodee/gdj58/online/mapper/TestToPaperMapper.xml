@@ -123,6 +123,24 @@
 		)
 	</insert>
 	
+	<select id="selectQuestionAndExample"
+		parameterType="int"
+		resultType="java.util.Map">
+		
+		SELECT
+			q.question_no questionNo
+			, q.test_no testNo
+			, q.question_idx questionIdx
+			, q.question_title questionTitle
+			, e.example_no exampleNo
+			, e.example_idx exampleIdx
+			, e.example_title exampleTitle
+			, e.example_ox exampleOX
+		FROM question q INNER JOIN example e 
+		ON e.question_no = q.question_no
+		WHERE q.question_no = #{questionNo}
+	</select>
+	
 	<select id="selectExampleList" 
 		resultType="goodee.gdj58.online.vo.Example"
 		parameterType="java.util.Map">
